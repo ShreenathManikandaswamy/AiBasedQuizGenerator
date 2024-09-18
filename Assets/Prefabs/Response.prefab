@@ -255,7 +255,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 291895240016705838}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2557356823060371699}
+        m_TargetAssemblyTypeName: ChoiceHelper, Assembly-CSharp
+        m_MethodName: Selected
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2557356823060371699
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -269,3 +281,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   choice: {fileID: 5559204654600748343}
+  CorrectAnswerValue: 
