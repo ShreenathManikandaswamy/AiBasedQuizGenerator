@@ -10,6 +10,8 @@ public class QuizGenerator : MonoBehaviour
     [SerializeField]
     private Keys keys;
     [SerializeField]
+    private QuizManager manager;
+    [SerializeField]
     private TMP_InputField topic;
     [SerializeField]
     private TMP_InputField numberOfQuestions;
@@ -35,6 +37,7 @@ public class QuizGenerator : MonoBehaviour
 
     public void Generate()
     {
+        manager.Load();
         StartCoroutine(GetRequest(url));
     }
 
@@ -57,6 +60,7 @@ public class QuizGenerator : MonoBehaviour
                 case UnityWebRequest.Result.Success:
                     string responseValue = webRequest.downloadHandler.text;
                     responseData = JsonConvert.DeserializeObject<List<ResponseData>>(responseValue);
+                    manager.LoadQuestions(responseData);
                     break;
             }
         }
