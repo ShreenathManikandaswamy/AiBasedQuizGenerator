@@ -3,17 +3,39 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
+using TMPro;
 
 public class QuizGenerator : MonoBehaviour
 {
     [SerializeField]
     private Keys keys;
+    [SerializeField]
+    private TMP_InputField topic;
+    [SerializeField]
+    private TMP_InputField numberOfQuestions;
+    [SerializeField]
+    private TMP_Dropdown difficulty;
+    [SerializeField]
+    private TMP_Dropdown language;
 
+    private string difficultyValue;
+    private string languageValue;
+    private string url;
     private List<ResponseData> responseData;
 
-    private void Start()
+    private void Awake()
     {
-        StartCoroutine(GetRequest(keys.googleVertextUrl));
+        topic.text = "Fruits and vegetables";
+        numberOfQuestions.text = "5";
+        difficultyValue = difficulty.options[0].text;
+        languageValue = language.options[0].text;
+        url = keys.googleVertextUrl + "?topic=" + ReplaceWhitespace(topic.text) + "&num_q=" + ReplaceWhitespace(numberOfQuestions.text)
+            + "&diff=" + ReplaceWhitespace(difficultyValue) + "&lang=" + languageValue;
+    }
+
+    public void Generate()
+    {
+        StartCoroutine(GetRequest(url));
     }
 
     IEnumerator GetRequest(string uri)
@@ -33,19 +55,15 @@ public class QuizGenerator : MonoBehaviour
                     Debug.LogError("HTTP Error: " + webRequest.error);
                     break;
                 case UnityWebRequest.Result.Success:
-                    string responseValue = ProcessResponse(webRequest.downloadHandler.text);
-                    Debug.Log(responseValue);
+                    string responseValue = webRequest.downloadHandler.text;
                     responseData = JsonConvert.DeserializeObject<List<ResponseData>>(responseValue);
-                    Debug.Log(responseData.Count);
                     break;
             }
         }
     }
 
-    private string ProcessResponse(string response)
+    private string ReplaceWhitespace(string input)
     {
-        string[] output = response.Split("json\n");
-        string[] value = output[1].Split("\n`");
-        return value[0];
+        return input.Replace(" ", "");
     }
 }
