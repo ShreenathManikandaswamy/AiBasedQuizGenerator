@@ -24,20 +24,38 @@ public class QuizGenerator : MonoBehaviour
     private string languageValue;
     private string url;
     private List<ResponseData> responseData;
+    private int diffCount = 0;
+    private int langCount = 0;
 
     private void Awake()
     {
         topic.text = "Fruits and vegetables";
         numberOfQuestions.text = "5";
-        difficultyValue = difficulty.options[0].text;
-        languageValue = language.options[0].text;
+        difficultyValue = difficulty.options[diffCount].text;
+        languageValue = language.options[langCount].text;
         url = keys.googleVertextUrl + "?topic=" + ReplaceWhitespace(topic.text) + "&num_q=" + ReplaceWhitespace(numberOfQuestions.text)
             + "&diff=" + ReplaceWhitespace(difficultyValue) + "&lang=" + languageValue;
+    }
+
+    public void OnDiffChange(int value)
+    {
+        diffCount = value;
+    }
+
+    public void OnLangChange(int value)
+    {
+        langCount = value;
     }
 
     public void Generate()
     {
         manager.Load();
+        topic.text = "Fruits and vegetables";
+        numberOfQuestions.text = "5";
+        difficultyValue = difficulty.options[diffCount].text;
+        languageValue = language.options[langCount].text;
+        url = keys.googleVertextUrl + "?topic=" + ReplaceWhitespace(topic.text) + "&num_q=" + ReplaceWhitespace(numberOfQuestions.text)
+            + "&diff=" + ReplaceWhitespace(difficultyValue) + "&lang=" + languageValue;
         StartCoroutine(GetRequest(url));
     }
 
