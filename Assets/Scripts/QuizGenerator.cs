@@ -22,6 +22,8 @@ public class QuizGenerator : MonoBehaviour
 
     private string difficultyValue;
     private string languageValue;
+    private string topicValue;
+    private string questionsCount;
     private string url;
     private List<ResponseData> responseData;
     private int diffCount = 0;
@@ -50,11 +52,11 @@ public class QuizGenerator : MonoBehaviour
     public void Generate()
     {
         manager.Load();
-        topic.text = "Fruits and vegetables";
-        numberOfQuestions.text = "5";
+        topicValue = topic.text;
+        questionsCount = numberOfQuestions.text;
         difficultyValue = difficulty.options[diffCount].text;
         languageValue = language.options[langCount].text;
-        url = keys.googleVertextUrl + "?topic=" + ReplaceWhitespace(topic.text) + "&num_q=" + ReplaceWhitespace(numberOfQuestions.text)
+        url = keys.googleVertextUrl + "?topic=" + ReplaceWhitespace(topicValue) + "&num_q=" + ReplaceWhitespace(questionsCount)
             + "&diff=" + ReplaceWhitespace(difficultyValue) + "&lang=" + languageValue;
         Debug.Log(url);
         StartCoroutine(GetRequest(url));
