@@ -56,6 +56,7 @@ public class QuizGenerator : MonoBehaviour
         languageValue = language.options[langCount].text;
         url = keys.googleVertextUrl + "?topic=" + ReplaceWhitespace(topic.text) + "&num_q=" + ReplaceWhitespace(numberOfQuestions.text)
             + "&diff=" + ReplaceWhitespace(difficultyValue) + "&lang=" + languageValue;
+        Debug.Log(url);
         StartCoroutine(GetRequest(url));
     }
 
@@ -77,11 +78,23 @@ public class QuizGenerator : MonoBehaviour
                     break;
                 case UnityWebRequest.Result.Success:
                     string responseValue = webRequest.downloadHandler.text;
+                    Debug.Log(responseValue);
+                    if(responseValue.Contains("json"))
+                    {
+                        responseValue = FixJson(responseValue);
+                    }
                     responseData = JsonConvert.DeserializeObject<List<ResponseData>>(responseValue);
                     manager.LoadQuestions(responseData);
                     break;
             }
         }
+    }
+
+    private string FixJson(string json)
+    {
+        string[] jsonRemove = json.Split("json");
+        string[] output = jsonRemove[1].Split("```");
+        return output[0];
     }
 
     private string ReplaceWhitespace(string input)
