@@ -83,6 +83,17 @@ public class QuizManager : MonoBehaviour
     private void LoadQuizComponent()
     {
         quizInstance = Instantiate(quizPrefab, quizParent);
-        quizInstance.SetupQuestion(quiz[count], this);
+        if (CheckIntOrString(quiz[count].correct))
+            quizInstance.SetupQuestion(quiz[count], this, quiz[count].responses[int.Parse(quiz[count].correct)]);
+        else
+            quizInstance.SetupQuestion(quiz[count], this, "");
+    }
+
+    private bool CheckIntOrString(string value)
+    {
+        if (value == "0" || value == "1" || value == "2" || value == "3")
+            return true;
+        else
+            return false;
     }
 }

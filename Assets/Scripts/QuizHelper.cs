@@ -20,7 +20,7 @@ public class QuizHelper : MonoBehaviour
     private ResponseData Response;
     private bool correctAnswer;
 
-    public void SetupQuestion(ResponseData quiz, QuizManager quizManager)
+    public void SetupQuestion(ResponseData quiz, QuizManager quizManager, string correctAnswer)
     {
         manager = quizManager;
         Response = quiz;
@@ -30,7 +30,12 @@ public class QuizHelper : MonoBehaviour
         {
             ChoiceHelper responseInstance = Instantiate(choices, choiceParent);
             responseInstance.SetupChoice(response, this);
-            responseInstance.CorrectAnswerValue = quiz.correct;
+            if (!string.IsNullOrWhiteSpace(correctAnswer))
+                responseInstance.CorrectAnswerValue = correctAnswer;
+            else
+            {
+                responseInstance.CorrectAnswerValue = quiz.correct;
+            }
         }
     }
 
